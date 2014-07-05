@@ -12,7 +12,20 @@ any value for your password).
 If you are not eager to run your own instance of flowdock-xmpp you can connect
 to a public one by using `<API_TOKEN>@flowdock.ozansener.com`.
 
+### Joining rooms
 
+If your client supports XMPP bookmarks you can use them to join flows;
+
+- In [Psi](http://psi-im.org/) right click the server name and select the
+  desired bookmark.
+
+Otherwise, you have to enter room info manually;
+
+- In Adium choose `File -> Join Group Chat` and enter room info as follows:
+    * *Chat Room Name*: `flow-name#room-name`. For example, if your flow url is
+      https://www.flowdock.com/app/foo-bar/main you should enter it as `foo-bar#main`
+    * *Server*: This should be the hostname of the flowdock-xmpp instance. For
+      example, `flowdock.ozansener.com`.
 ## Installation
 
 ### Prerequisites
