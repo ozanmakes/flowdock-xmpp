@@ -1,0 +1,17 @@
+{
+  "author": "Ozan Sener",
+  "name": "flowdock-xmpp",
+  "version": "0.0.1",
+  "description": "Unofficial Flowdock XMPP (Jabber) Gateway",
+  "license": "MIT",
+  "main": "bin/flowdock-xmpp.js",
+  "bin": "bin/flowdock-xmpp.js",
+  "dependencies": {
+    "node-stringprep": "0.4.0",
+    "node-xmpp-server": "1.0.0-alpha1",
+    "ltx": "0.5.2",
+    "request": "2.36.0",
+    "flowdock": "0.6.0",
+    "source-map-support": "0.2.6"
+  }
+}
