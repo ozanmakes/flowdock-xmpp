@@ -55,9 +55,26 @@
             conferences (when response (map conference response))]
         [(into [:storage {:xmlns "storage:bookmarks"}] conferences)])))
 
-;; Responds with server info.
-(defmethod handle "http://jabber.org/protocol/disco#info" [_]
-  (go [:identity {:category :server, :type :im, :name "Flowdock"}]))
+(defmethod handle "http://jabber.org/protocol/disco#info" [{:keys [to token] :as query}]
+  (go
+    (let [room-id (-> to (str/split #"@") first)]
+      (if (some #{"#"} room-id)
+        ;; if room-id is valid handle this as a room info query
+        (let [[org-name flow-name] (str/split room-id #"#")
+              flow (<! (get-resource "flows" org-name flow-name))]
+          [[:identity {:category "conference", :type "text", :name flow-name}]
+           [:feature {:var "http://jabber.org/protocol/muc"}]
+           [:feature {:var "muc_membersonly"}]
+           [:x {:xmlns "http://flowdock.com/protocol/muc#room"}
+            [:id (:id flow)]
+            [:privacy "public"]
+            [:owner to]
+            [:guest_url]
+            [:num_participants (count (:users flow))]
+            [:last_active (-> flow :last_message_at (js/Date.) (.getTime))]]])
+
+        ;; otherwise respond with server info
+        [:identity {:category :server, :type :im, :name "Flowdock"}]))))
 
 ;; Responds with a vcard element for a user.
 (defmethod handle "vcard-temp" [{:keys [token to] :as query}]

@@ -45,15 +45,15 @@
 ;; Handles presence stanzas, which include both room join requests and client
 ;; status changes.
 (defmethod handle :presence [client stanza]
-  (let [from (.-from (.-attrs stanza))
-        to (.-to (.-attrs stanza))
-        room-id (-> to (str/split #"@") first)
-        c (.getChild stanza "c")
-        node (when c (.-node (.-attrs c)))]
-    (if (some #{"#"} room-id)
-      ;; if room-id is valid handle this as a join request
-      (let [[flow channel] (str/split room-id #"#")]
-        (go
+  (go
+    (let [from (.-from (.-attrs stanza))
+          to (.-to (.-attrs stanza))
+          room-id (-> to (str/split #"@") first)
+          c (.getChild stanza "c")
+          node (when c (.-node (.-attrs c)))]
+      (if (some #{"#"} room-id)
+        ;; if room-id is valid handle this as a join request
+        (let [[flow channel] (str/split room-id #"#")]
           (let [token (-> from (str/split #"@") first)
                 path  (str "flows/" flow "/" channel)
                 room (<! (get-resource token path))
@@ -90,13 +90,13 @@
                                  [:body (:content message)]
                                  [:delay {:xmlns "urn:xmpp:delay"
                                           :from_jid (if self from (jid buddy))
-                                          :stamp timestamp}]])))))))
+                                          :stamp timestamp}]]))))))
 
-      ;; otherwise just set the client presence
-      (go [:presence {:from from
-                      :to (-> from (str/split #"/") first)}
-           [:x {:xmlns "http://www.flowdock.com"}
-            [:client_type node]]]))))
+        ;; otherwise just set the client presence
+        [:presence {:from from
+                    :to (-> from (str/split #"/") first)}
+         [:x {:xmlns "http://www.flowdock.com"}
+          [:client_type node]]]))))
 
 ;; Handles sending of new private messages.
 (defmethod handle [:message :chat] [client stanza]
