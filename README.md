@@ -23,9 +23,12 @@ Otherwise, you have to enter room info manually;
 
 - In Adium choose `File -> Join Group Chat` and enter room info as follows:
     * *Chat Room Name*: `flow-name#room-name`. For example, if your flow url is
-      https://www.flowdock.com/app/foo-bar/main you should enter it as `foo-bar#main`
+    https://www.flowdock.com/app/foo-bar/main you should enter it as
+    `foo-bar#main`
     * *Server*: This should be the hostname of the flowdock-xmpp instance. For
-      example, `flowdock.ozansener.com`.
+    example, `flowdock.ozansener.com`.
+
+
 ## Installation
 
 ### Prerequisites
